@@ -1,13 +1,5 @@
 <template>
   <div class="flex flex-col p-8">
-    <input
-      type="text"
-      name="search"
-      id="search"
-      class="w-full rounded border-2 border-gray-200"
-      placeholder="Search your favorite meal 😋"
-    />
-
     <div class="mt-2 flex gap-2">
       <router-link
         v-for="letter in letters"
@@ -18,7 +10,7 @@
       </router-link>
     </div>
 
-    <!-- <pre>{{ ingredients }}</pre> -->
+    <pre>{{ ingredients }}</pre>
   </div>
 </template>
 
