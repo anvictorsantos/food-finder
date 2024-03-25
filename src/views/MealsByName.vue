@@ -1,65 +1,40 @@
 <template>
   <div class="p-8 pb-0">
+    <h1 class="text-4xl font-bold mb-4 text-orange-500">
+      Search Meals by Name
+    </h1>
+  </div>
+  <div class="px-8 pb-3">
     <input
       type="text"
       v-model="keyword"
-      name="search"
-      id="search"
-      class="w-full rounded border-2 border-gray-200"
-      placeholder="Search your favorite meal 😋"
+      class="rounded border-2 bg-white border-gray-200 focus:ring-orange-500 focus:border-orange-500 w-full"
+      placeholder="Search for Meals"
       @change="searchMeals"
     />
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 p-8">
-    <div
-      v-for="meal of meals"
-      :key="meal.idMeal"
-      class="bg-white shadow rounded-xl"
-    >
-      <router-link :to="{ name: 'mealDetails', params: { id: meal.idMeal } }">
-        <img
-          :src="meal.strMealThumb"
-          :alt="meal.strMeal"
-          class="rounded-t-2xl h-48 object-cover w-full"
-        />
-      </router-link>
-      <div class="p-3">
-        <h3 class="font-bold">{{ meal.strMeal }}</h3>
-        <p class="mb-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel maiores
-          doloribus nostrum sit hic, odit debitis dolore quasi nulla, ut quas
-        </p>
-        <div class="flex items-center justify-between">
-          <a
-            :href="meal.strYoutube"
-            target="_blank"
-            class="px-3 py-2 rounded border-2 bg-red-500 border-red-600 text-white hover:bg-red-600 transition-colors"
-            >YouTube</a
-          >
-          <router-link
-            to="/"
-            class="px-3 py-2 rounded border-2 bg-purple-500 border-purple-600 text-white hover:bg-red-600 transition-colors"
-            >View</router-link
-          >
-        </div>
-      </div>
-    </div>
-  </div>
+  <Meals :meals="meals" />
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
 import store from "@/store";
-import { useRoute } from "vue-router";
+
+import Meals from "@/components/Meals.vue";
 
 const route = useRoute();
 const keyword = ref("");
 const meals = computed(() => store.state.searchedMeals);
 
 function searchMeals() {
-  store.dispatch("searchMeals", keyword.value);
+  if (keyword.value) {
+    store.dispatch("searchMeals", keyword.value);
+  } else {
+    store.commit("setSearchedMeals", []);
+  }
 }
 
 onMounted(() => {
